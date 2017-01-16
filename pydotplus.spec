@@ -4,7 +4,7 @@
 #
 Name     : pydotplus
 Version  : 2.0.2
-Release  : 4
+Release  : 5
 URL      : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Source0  : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Summary  : Python interface to Graphviz's Dot language
@@ -35,13 +35,15 @@ python components for the pydotplus package.
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1484564199
 python2 setup.py build -b py2
 python3 setup.py build -b py3
 
 %install
+export SOURCE_DATE_EPOCH=1484564199
 rm -rf %{buildroot}
-python2 -tt setup.py build -b py2 install --root=%{buildroot}
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+python2 -tt setup.py build -b py2 install --root=%{buildroot} --force
+python3 -tt setup.py build -b py3 install --root=%{buildroot} --force
 
 %files
 %defattr(-,root,root,-)
