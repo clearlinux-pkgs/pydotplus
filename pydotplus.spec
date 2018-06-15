@@ -4,7 +4,7 @@
 #
 Name     : pydotplus
 Version  : 2.0.2
-Release  : 15
+Release  : 16
 URL      : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Source0  : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Summary  : Python interface to Graphviz's Dot language
