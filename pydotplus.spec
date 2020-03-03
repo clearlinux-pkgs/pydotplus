@@ -4,29 +4,133 @@
 #
 Name     : pydotplus
 Version  : 2.0.2
-Release  : 27
+Release  : 28
 URL      : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Source0  : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Summary  : Python interface to Graphviz's Dot language
 Group    : Development/Tools
 License  : MIT
-Requires: pydotplus-python3
-Requires: pydotplus-python
+Requires: pydotplus-license = %{version}-%{release}
+Requires: pydotplus-python = %{version}-%{release}
+Requires: pydotplus-python3 = %{version}-%{release}
 Requires: pyparsing
-BuildRequires : pbr
-BuildRequires : pip
-
-BuildRequires : python3-dev
-BuildRequires : setuptools
+BuildRequires : buildreq-distutils3
+BuildRequires : pyparsing
 
 %description
+=======================================================
 PyDotPlus - Python interface to Graphviz's Dot language
-        =======================================================
+=======================================================
+
+.. image:: https://pypip.in/py_versions/pydotplus/badge.png
+   :target: https://pypi.python.org/pypi/pydotplus/
+   :alt: Supported Python versions
+
+.. image:: https://pypip.in/version/pydotplus/badge.png?text=version
+   :target: https://pypi.python.org/pypi/pydotplus/
+   :alt: Latest Version
+
+.. image:: https://pypip.in/download/pydotplus/badge.png
+   :target: https://pypi.python.org/pypi/pydotplus/
+   :alt: Downloads
+
+.. image:: https://pypip.in/license/pydotplus/badge.png
+   :target: https://pypi.python.org/pypi/pydotplus/
+   :alt: License
+
+.. image:: https://pypip.in/status/pydotplus/badge.png
+   :target: https://pypi.python.org/pypi/pydotplus/
+   :alt: Status
+
+.. image:: https://travis-ci.org/carlos-jenkins/pydotplus.svg?branch=master
+   :target: https://travis-ci.org/carlos-jenkins/pydotplus
+   :alt: Continuous Integration
+
+.. image:: https://coveralls.io/repos/carlos-jenkins/pydotplus/badge.png
+   :target: https://coveralls.io/r/carlos-jenkins/pydotplus
+   :alt: Coverage
+
+
+About
+=====
+
+PyDotPlus is an improved version of the old pydot project that provides a
+Python Interface to Graphviz's Dot language.
+
+   http://pydotplus.readthedocs.org/
+
+Differences with pydot:
+
+- Compatible with PyParsing 2.0+.
+- Python 2.7 - Python 3 compatible.
+- Well documented.
+- CI Tested.
+
+
+Installation
+============
+
+::
+
+   pip install pydotplus
+
+
+Development
+===========
+
+   https://github.com/carlos-jenkins/pydotplus
+
+Run code QA:
+
+::
+
+   pip install tox
+   tox
+
+
+Documentation
+=============
+
+User guide and API Reference can be found in:
+
+   http://pydotplus.readthedocs.org/
+
+To build it from source execute:
+
+::
+
+   pip install sphinx sphinx_rtd_theme
+   cd doc/
+   make html
+
+
+Requirements
+============
+
+- ``pyparsing``: pydot requires the pyparsing module in order to be able to
+  load DOT files.
+
+- ``GraphViz``: is needed in order to render the graphs into any of the
+  plethora of output formats supported.
+
+
+License
+=======
+
+This code is distributed under the MIT license. See LICENSE for details.
+
+%package license
+Summary: license components for the pydotplus package.
+Group: Default
+
+%description license
+license components for the pydotplus package.
+
 
 %package python
 Summary: python components for the pydotplus package.
 Group: Default
-Requires: pydotplus-python3
+Requires: pydotplus-python3 = %{version}-%{release}
 
 %description python
 python components for the pydotplus package.
@@ -36,6 +140,7 @@ python components for the pydotplus package.
 Summary: python3 components for the pydotplus package.
 Group: Default
 Requires: python3-core
+Provides: pypi(pydotplus)
 
 %description python3
 python3 components for the pydotplus package.
@@ -43,24 +148,39 @@ python3 components for the pydotplus package.
 
 %prep
 %setup -q -n pydotplus-2.0.2
+cd %{_builddir}/pydotplus-2.0.2
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1507169133
-python3 setup.py build -b py3
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1583206207
+# -Werror is for werrorists
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
+export MAKEFLAGS=%{?_smp_mflags}
+python3 setup.py build
 
 %install
+export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
-python3 -tt setup.py build -b py3 install --root=%{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pydotplus
+cp %{_builddir}/pydotplus-2.0.2/LICENSE %{buildroot}/usr/share/package-licenses/pydotplus/4118ca520dc186a23cda774e2abd6e6aabab218c
+python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pydotplus/4118ca520dc186a23cda774e2abd6e6aabab218c
 
 %files python
 %defattr(-,root,root,-)
