@@ -4,7 +4,7 @@
 #
 Name     : pydotplus
 Version  : 2.0.2
-Release  : 42
+Release  : 43
 URL      : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Source0  : http://pypi.debian.net/pydotplus/pydotplus-2.0.2.tar.gz
 Summary  : Python interface to Graphviz's Dot language
@@ -13,9 +13,9 @@ License  : MIT
 Requires: pydotplus-license = %{version}-%{release}
 Requires: pydotplus-python = %{version}-%{release}
 Requires: pydotplus-python3 = %{version}-%{release}
-Requires: pyparsing
+Requires: pypi(pyparsing)
 BuildRequires : buildreq-distutils3
-BuildRequires : pyparsing
+BuildRequires : pypi(pyparsing)
 
 %description
 PyDotPlus - Python interface to Graphviz's Dot language
@@ -58,7 +58,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1603400230
+export SOURCE_DATE_EPOCH=1641845553
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
 export FCFLAGS="$FFLAGS -fno-lto "
